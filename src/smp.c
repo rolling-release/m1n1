@@ -266,6 +266,12 @@ void smp_start_secondaries(void)
         return;
     }
 
+    if (in_el2())
+        msr(TPIDR_EL2, boot_cpu_idx);
+    else
+        msr(TPIDR_EL1, boot_cpu_idx);
+
+
     for (int i = 0; i < MAX_CPUS; i++) {
 
         if (i == boot_cpu_idx)
@@ -334,7 +340,7 @@ void smp_call4(int cpu, void *func, u64 arg0, u64 arg1, u64 arg2, u64 arg3)
 
     struct spin_table *target = &spin_table[cpu];
 
-    if (cpu == 0)
+    if (cpu == boot_cpu_idx)
         return;
 
     u64 flag = target->flag;
