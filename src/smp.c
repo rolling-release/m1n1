@@ -210,6 +210,7 @@ void smp_start_secondaries(void)
             break;
         case T8112:
         case T8122:
+        case T6030:
             cpu_start_off = CPU_START_OFF_T8112;
             break;
         case T6020:
